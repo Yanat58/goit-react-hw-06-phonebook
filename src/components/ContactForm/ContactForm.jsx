@@ -1,14 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
+import Notiflix from 'notiflix';
 import { BiUserPlus } from 'react-icons/bi';
 import css from './ContactForm.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'feature/contactSlice';
 
-export const ContactForm = () => {
+export const ContactForm = ({ onClose }) => {
   const dispatch = useDispatch();
-  console.log(dispatch)
+
+  const contacts = useSelector(state => state.contact.contacts);
   const [name, setName] = React.useState('');
   const [number, setNumber] = React.useState('');
 
@@ -31,22 +32,35 @@ export const ContactForm = () => {
 
   const handelSubmit = e => {
     e.preventDefault();
-   
-  };
 
-  const addContactHandler =() => {
-    const contact = {
+    const newContact = {
       id: nanoid(),
-          name ,
-          number,
+      name,
+      number,
+    };
+
+    const nameIsExist = contacts.some(
+      contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
+    );
+
+    const numberIsExist = contacts.some(
+      contact => contact.number.trim() === number.trim()
+    );
+
+    if (nameIsExist) {
+      Notiflix.Report.warning(`This name is already in contacts`);
+      return;
+    } else if (numberIsExist) {
+      Notiflix.Report.warning(`This number is already in contacts`);
+      return;
+    } else {
+      dispatch(addContact(newContact));
     }
-    dispatch(addContact(contact));
+
     setName('');
     setNumber('');
-  }
- 
-    
- 
+    onClose();
+  };
 
   return (
     <form className={css.formBox} onSubmit={handelSubmit}>
@@ -61,7 +75,7 @@ export const ContactForm = () => {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           placeholder="Enter name"
-          onChange={(e) => setName(e.target.value)}
+          onChange={e => setName(e.currentTarget.value)}
         />
       </label>
       <label className={css.label}>
@@ -75,18 +89,18 @@ export const ContactForm = () => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           placeholder="Enter phone number"
-          onChange={(e) => setName(e.target.value)}
+          onChange={e => setName(e.currentTarget.value)}
         />
       </label>
 
-      <button className={css.btnAdd} type="submit">
+      <button
+        className={css.btnAdd}
+        type="submit"
+        onClick={() => handelSubmit()}
+      >
         <BiUserPlus className={css.btnAddIcon} size={25} />
         <span className={css.btnAddText}>Add contact</span>
       </button>
     </form>
   );
-};
-
-ContactForm.prototype = {
-  onSubmit: PropTypes.func.isRequired,
 };

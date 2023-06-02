@@ -1,9 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { BiUserMinus } from 'react-icons/bi';
 import css from './ContactList.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from 'feature/contactSlice';
 
-export const ContactList = ({ contacts, onDeleteContact }) => {
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contact.contacts);
+  // const filter = useSelector(state => state.contact.filter);
+
+  const dispatch = useDispatch();
+
   return (
     <>
       <ul className={css.contactList}>
@@ -15,7 +21,7 @@ export const ContactList = ({ contacts, onDeleteContact }) => {
               className={css.deletBtn}
               type="button"
               onClick={() => {
-                onDeleteContact(id);
+                dispatch(deleteContact(id));
               }}
             >
               <span>
@@ -27,15 +33,4 @@ export const ContactList = ({ contacts, onDeleteContact }) => {
       </ul>
     </>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
 };

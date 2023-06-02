@@ -1,5 +1,4 @@
-import React from 'react';
-import Notiflix from 'notiflix';
+import React, { useState } from 'react';
 
 import { BiX, BiUserPlus } from 'react-icons/bi';
 import { ContactForm } from './ContactForm/ContactForm';
@@ -7,26 +6,18 @@ import { ContactList } from 'components/ContactList/ContactList';
 import { Filter } from 'components/Filter/Filter';
 import { Modal } from 'components/Modal/Modal';
 import css from 'components/App.module.css';
-import { useSelector } from 'react-redux';
-
-// const initialContact = [
-//   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-//   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-//   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-//   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-// ];
+// import { useSelector } from 'react-redux';
 
 export const App = () => {
   // const [filter, setFilter] = useState('');
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
   // const [contacts, setContacts] = React.useState(() => {
   //   return (
   //     JSON.parse(window.localStorage.getItem('contacts')) ?? initialContact
   //   );
   // });
 
-  const contacts = useSelector((state) => console.log(state.contact.contacts))
-
+  // const contacts = useSelector(state => state.contact.contacts);
 
   // useEffect(() => {
   //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -96,11 +87,8 @@ export const App = () => {
         {showModal && (
           <Modal onClose={toggleModal}>
             <h2 className={css.titleSection}>Add Contact</h2>
-            {contacts?.map((contact) => (
-              <ContactForm key={contact.id}
-              contact={contact} />
-            ))}
-            
+            <ContactForm onClose={toggleModal} />
+
             <button
               className={css.closeBtnModal}
               type="button"
@@ -113,12 +101,9 @@ export const App = () => {
 
         <h2 className={css.titleSection}>Contacts</h2>
 
-        {/* <Filter value={filter} onChange={changeFilter} />
+        <Filter />
 
-        <ContactList
-          contacts={getVisibleContact()}
-          onDeleteContact={deleteContact}
-        /> */}
+        <ContactList />
       </div>
     </>
   );
