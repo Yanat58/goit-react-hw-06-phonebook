@@ -33,10 +33,8 @@ export const ContactForm = ({ onClose }) => {
       return;
     } else if (nameIsExist) {
       Notiflix.Report.warning(`This ${name} is already in contacts`);
-      return;
     } else if (numberIsExist) {
       Notiflix.Report.warning(`This ${number} is already in contacts`);
-      return;
     } else {
       dispatch(addContact(newContact));
     }
