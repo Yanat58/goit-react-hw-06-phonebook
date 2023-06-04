@@ -8,31 +8,12 @@ import { addContact } from 'feature/contactSlice';
 
 export const ContactForm = ({ onClose }) => {
   const dispatch = useDispatch();
-
   const contacts = useSelector(state => state.contact.contacts);
+
   const [name, setName] = React.useState('');
   const [number, setNumber] = React.useState('');
 
-  // const handelChange = e => {
-  //   const { name, value } = e.currentTarget.value;
-
-  //   switch (name) {
-  //     case 'name':
-  //       setName(value);
-  //       break;
-
-  //     case 'number':
-  //       setNumber(value);
-  //       break;
-
-  //     default:
-  //       return;
-  //   }
-  // };
-
-  const handelSubmit = e => {
-    e.preventDefault();
-
+  const addContactHandler = () => {
     const newContact = {
       id: nanoid(),
       name,
@@ -47,23 +28,26 @@ export const ContactForm = ({ onClose }) => {
       contact => contact.number.trim() === number.trim()
     );
 
-    if (nameIsExist) {
-      Notiflix.Report.warning(`This name is already in contacts`);
+    if (name.trim() === '' || number.trim() === '') {
+      Notiflix.Notify.warning(`Fields must be filled`);
+      return;
+    } else if (nameIsExist) {
+      Notiflix.Report.warning(`This ${name} is already in contacts`);
       return;
     } else if (numberIsExist) {
-      Notiflix.Report.warning(`This number is already in contacts`);
+      Notiflix.Report.warning(`This ${number} is already in contacts`);
       return;
     } else {
       dispatch(addContact(newContact));
     }
 
+    onClose();
     setName('');
     setNumber('');
-    onClose();
   };
 
   return (
-    <form className={css.formBox} onSubmit={handelSubmit}>
+    <form className={css.formBox} onSubmit={e => e.preventDefault()}>
       <label className={css.label}>
         <b className={css.labelText}>Name</b>
         <input
@@ -89,14 +73,14 @@ export const ContactForm = ({ onClose }) => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           placeholder="Enter phone number"
-          onChange={e => setName(e.currentTarget.value)}
+          onChange={e => setNumber(e.currentTarget.value)}
         />
       </label>
 
       <button
         className={css.btnAdd}
         type="submit"
-        onClick={() => handelSubmit()}
+        onClick={() => addContactHandler()}
       >
         <BiUserPlus className={css.btnAddIcon} size={25} />
         <span className={css.btnAddText}>Add contact</span>

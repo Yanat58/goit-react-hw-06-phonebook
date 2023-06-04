@@ -2,27 +2,37 @@ import React from 'react';
 import { BiUserMinus } from 'react-icons/bi';
 import css from './ContactList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'feature/contactSlice';
+import { deleteContact, getContactValue } from 'feature/contactSlice';
+import { getFilterValue } from 'feature/filterSlice';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contact.contacts);
-  // const filter = useSelector(state => state.contact.filter);
+  const contacts = useSelector(getContactValue);
+  const filter = useSelector(getFilterValue);
 
   const dispatch = useDispatch();
+  const deleteContactHandler = id => dispatch(deleteContact(id));
+
+  const filterContactHandler = () => {
+    const normalizedFilter = filter.toLowerCase();
+    if (!filter) {
+      return contacts;
+    }
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
 
   return (
     <>
       <ul className={css.contactList}>
-        {contacts.map(({ id, name, number }) => (
+        {filterContactHandler().map(({ id, name, number }) => (
           <li className={css.contactItem} key={id}>
             <p className={css.contactName}>{name}:</p>
             <p className={css.contactNumber}>{number}</p>
             <button
               className={css.deletBtn}
               type="button"
-              onClick={() => {
-                dispatch(deleteContact(id));
-              }}
+              onClick={() => deleteContactHandler(id)}
             >
               <span>
                 <BiUserMinus className={css.btnDeleteIcon} size={20} />

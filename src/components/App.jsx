@@ -1,71 +1,13 @@
 import React, { useState } from 'react';
-
 import { BiX, BiUserPlus } from 'react-icons/bi';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
 import { Filter } from 'components/Filter/Filter';
 import { Modal } from 'components/Modal/Modal';
 import css from 'components/App.module.css';
-// import { useSelector } from 'react-redux';
 
 export const App = () => {
-  // const [filter, setFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
-  // const [contacts, setContacts] = React.useState(() => {
-  //   return (
-  //     JSON.parse(window.localStorage.getItem('contacts')) ?? initialContact
-  //   );
-  // });
-
-  // const contacts = useSelector(state => state.contact.contacts);
-
-  // useEffect(() => {
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
-
-  // const addContact = ({ name, number }) => {
-  //   const newContact = {
-  //     id: nanoid(),
-  //     name,
-  //     number,
-  //   };
-
-  //   const nameIsExist = contacts.some(
-  //     contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
-  //   );
-
-  //   const numberIsExist = contacts.some(
-  //     contact => contact.number.trim() === number.trim()
-  //   );
-
-  //   if (nameIsExist) {
-  //     Notiflix.Report.warning(`${name} is already in contacts`);
-  //     return;
-  //   } else if (numberIsExist) {
-  //     Notiflix.Report.warning(`${number} is already in contacts`);
-  //     return;
-  //   }
-
-  //   setContacts([newContact, ...contacts]);
-  //   toggleModal();
-  // };
-
-  // const getVisibleContact = () => {
-  //   const normalizedFilter = filter.toLowerCase();
-  //   return contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(normalizedFilter)
-  //   );
-  // };
-
-  // const deleteContact = contactId => {
-  //   setContacts(prevState =>
-  //     prevState.filter(contact => contact.id !== contactId)
-  //   );
-  // };
-
-  // const changeFilter = e => {
-  //   setFilter(e.currentTarget.value);
-  // };
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -98,11 +40,8 @@ export const App = () => {
             </button>
           </Modal>
         )}
-
         <h2 className={css.titleSection}>Contacts</h2>
-
         <Filter />
-
         <ContactList />
       </div>
     </>
