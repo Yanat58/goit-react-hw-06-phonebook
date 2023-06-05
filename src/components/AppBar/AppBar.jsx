@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { BiUserPlus } from 'react-icons/bi';
 import css from './AppBar.module.css';
 
@@ -12,4 +13,8 @@ export const AppBar = ({ onClose }) => {
       </button>
     </>
   );
+};
+
+AppBar.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };

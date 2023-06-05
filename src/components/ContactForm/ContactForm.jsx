@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 import { BiUserPlus } from 'react-icons/bi';
@@ -85,4 +86,8 @@ export const ContactForm = ({ onClose }) => {
       </button>
     </form>
   );
+};
+
+ContactForm.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
