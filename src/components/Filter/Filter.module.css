@@ -34,3 +34,10 @@
   margin-left: 8px;
   color: #000;
 }
+.titleSection {
+  margin-left: 20px;
+  margin-bottom: 20px;
+
+  font-size: 32px;
+  line-height: 0.9;
+}
